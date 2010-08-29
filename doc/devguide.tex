@@ -1,0 +1,93 @@
+% File `devguide.tex' is the Developers Guide for iTe.
+% This guide is incomplete to the point of uselessness.
+%
+% Copyright (C) 1999 by Wolfgang Kuehn
+
+\documentclass{article}
+
+\newcommand{\iTe}{\textbf{\large iTe}}
+
+\begin{document}
+
+\begin{titlepage}
+\begin{center}{\Large
+\iTe, the interactive \TeX\ editor\\[6pt]
+Developer's Guide Version 1.2\\[24pt]
+Wolfgang K\"uhn\\[6pt]
+February 1999}
+\end{center}
+\end{titlepage}
+
+
+\section{Zooming}
+Zooming is one of the trickier features of \iTe. Any (affine)
+transformation matrix $T$ in PostScript can be written as
+\[
+T(x, y) = T_L (x, y)+ T_t,
+\]
+where $T_L$ is a $2\times 2$ matrix and $T_t$ is a translation vector.
+Internally, $T$ is stored as a $6$-array
+\[
+T=[T_L(1,1)\ T_L(1,2)\ T_L(2,1)\ T_L(2,2)\ T_t(1)\ T_t(2)].
+\]
+Any point $(x, y)$ in user space is mapped to a point in device space
+$(\tilde x, \tilde y)$ by a serie of 3 transformations:
+\[
+RZT(x, y)=(\tilde x, \tilde y).
+\]
+Here $R$ is the current transformation matrix before a page is
+started, i.e., before \emph{bop} is issued. The transformation $RT$ is
+the current transformation matrix after \emph{bop} has been issued
+with a current zoom matrix $Z$ equals the idendity. The component
+$Z_L$ of the zoom matrix $Z$ is given by the user supplied zoom factor
+$f$, 
+\[
+Z_L=[f\ 0\ 0\ f].
+\]
+The transformation $Z$ is issued via a $\emph{Z concat}$ immediately
+before a page is started.
+
+Now suppose the user wants to zoom with a new zoom factor $f^n$.
+We need to find a new zoom matrix $Z^n$
+\[
+Z^n=[f^n\ 0\ 0\ f^n\ Z^n_t(1)\ Z^n_t(2)]
+\]
+with unknown translation vector $Z^n_t$ such that
+\[
+RZ^nT(x, y)=(\tilde x_c, \tilde y_c).
+\]
+Here $(\tilde x_c, \tilde y_c)$ is the center of the device and
+$(x,y)$ the current point (location of current object) in user space.
+Therefore
+\[
+Z^n_t=R^{-1}(\tilde x_c, \tilde y_c)-Z^n_L T(x,y)
+     =-Z^n_L Z^{-1}R^{-1}(\tilde x, \tilde y)
+      +R^{-1}(\tilde x_c, \tilde y_c).
+\]
+For given zoom matrix $Z$ the devices coordinates $(\tilde x, \tilde y)$ of
+all objects on the page have to be computed via a \emph{currentpoint transform}.
+These coordinates are then stored in the array \emph{pointinfo}.
+
+Note that $R^{-1}(\tilde x_c, \tilde y_c)$ is the center of the initial
+PostScript user space,
+\[
+R^{-1}(\tilde x_c, \tilde y_c) = (\textrm{\emph{DEVICEWIDTH}}/2, 
+                                  \textrm{\emph{DEVICEHEIGHT}}/2).
+\]
+For A4 paper size, the default, \emph{DEVICEWIDTH}=596 and \emph{DEVICEHEIGHT}=842.
+The construction of $Z^n$ is now accomplished with the following code:
+\begin{verbatim}
+     /Z 
+     [ 
+       f^n 0 0 f^n      % define Z^n_L
+       % push (\tilde x, \tilde y) on stack     
+       pointinfo object-number 2 mul 2 getinterval aload pop 
+       R itransform Z itransform
+       [
+         -f^n 0 0 -f^n DEVICEWIDTH DEVICEHEIGHT
+       ] transform
+       % now the translation vector Z^n_t is on top of the stack
+     ] def      % complete definition of Z
+\end{verbatim}
+
+\end{document}

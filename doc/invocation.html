@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>Invocation</TITLE>
+    <LINK REL="STYLESHEET" HREF="manual.css">
+  </HEAD>
+  <BODY >
+    
+    <B> Next:</B> <A HREF="latex.html">L<SUP>A</SUP>TEX Commands</A>
+    <B> Up:</B> <A HREF="manual.html">iTe</A>
+    <B> Previous:</B> <A HREF="general.html">How iTe works</A>
+    
+    <H1>Invocation</H1>
+    
+    <P>
+      
+    <H2>Invoking (X)Emacs commands</H2>
+    
+    <P>
+      If you are not an (X)Emacs beginner, please skip this section.
+      
+    <P>
+      To run an (X)Emacs command by name, start with `M-x', then type the
+      command name, and finish with RET.  `M-x' uses the minibuffer to read
+      the command name.  RET exits the minibuffer and runs the command.  We
+      refer to this process as `M-x cmd', where `cmd' is the command name.
+      To produce `M-x' (the Meta-x key), you have to press the Meta-key
+      (ALT key) and the x-key simultaneously. As an alternative, you can
+      also press the ESC-key, followed by the x-key.
+      
+    <P>
+      
+    <H2>Starting <span class=ite>iTe</span></H2>
+    
+    <P>
+      To start <span class=ite>iTe</span>, visit a (La)TeX file which contains active objects (see
+      previous section) and compile it. Then run `M-x ite' to start <span class=ite>iTe</span>.
+      Note that only one <span class=ite>iTe</span>-process can run in the same (X)Emacs process
+      at a time.  If `M-x ite' is invoked recursively, the previous
+      <span class=ite>iTe</span>-process is killed automatically.
+      
+    <P>
+      
+    <H2><span class=ite>iTe</span> is running</H2>
+    <p>
+      After start up, the curser jumps to the closest active object. All <tt>\ITE</tt>
+      directives are highlighted.
+    <p>
+      A new GhostScript window appears. On a MS-Windows platform, this window may be iconified, so
+      you have to open it.
+
+    <H2>Controlling <B>iTe</B></H2>
+    
+    <P>
+      The focus must be on the (X)Emacs window.
+      You can use the middle mouse button to select any other object. Once an object
+      is selected, use the <span class=ite>iTe</span> <A HREF="bindings.html">key bindings</A>
+      to manipulate the object.  There are also control keys that let you
+      navigate in your source code or let you do other tasks such as
+      zooming.
+      
+    <P>
+      <contact-stamp><hr><FONT SIZE=-1> Last modified by <A HREF="http://www.decatur.de/wolfgang">Wolfgang K&uuml;hn</a> on
+	  Saturday, 10 June 2000
+	</FONT>
+      </contact-stamp>
+  </BODY>
+</HTML>

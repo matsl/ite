@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+  <HEAD>
+    <TITLE>Installation and Customization</TITLE>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <LINK REL="STYLESHEET" HREF="manual.css">
+  </HEAD>
+  <BODY>
+    <div>
+      <B>Next:</B> <A HREF="general.html">How iTe works</A>
+      <B>Up:</B> <A HREF="manual.html">iTe</A>
+      <B>Previous:</B> <A HREF="description.html">Description</A>
+    </div>
+    
+    <H1>Installation</H1>
+    
+    <h2><a name="download">1. Download</a></h2>
+    
+    <p>
+       Download and extract <a href="ite__ITEVERSION_.zip">ite__ITEVERSION_.zip</a> (build on _TODAY_, about 100kb)
+       using your favorite packageing tool. The archive will be extracted into the directory <tt>'./ite'</tt>.
+       Maintainer of the <span class=ite>iTe</span> distribution need to download 
+       <a href="ite__ITEVERSION__src.zip">ite__ITEVERSION__src.zip</a> (build on _TODAY_, about 100kb) instead.
+    </p>
+    <p>
+      Note that there may be a <a href="http://www.decatur.de/ite">more recent (beta) release</a>, including bug reports and workarounds.
+    </p>
+    
+    <h2>2. Dependencies</h2>
+    
+    <p>
+      If necessary, install all <a href="distribution.html#requirements">required tools</a> on your system.
+    </p>
+    
+    <h2>3. Lisp Includes</h2>
+    
+    <p>
+      You must point <tt>Emacs</tt> to some resources required by <span class=ite>iTe</span>. This is done in
+      the initialization file <tt>.emacs</tt> for <tt>Gnu-Emacs</tt> or <tt>.xemacs/init.el</tt> for <tt>XEmacs</tt>,
+      which are both located in your <a href="homedir.html">home directory</a>.
+      To this initialization file, merge the following lines and edit <tt>ite-load-path</tt>:
+    </p>
+    <pre>
+
+;; The path to the ite-lisp library.
+(setq ite-load-path "~/ite/lib/ite.el")
+
+;; Preload iTe
+(autoload 'ite ite-load-path "Start the interactive TeX editor" t)
+    </pre>
+
+    <h2><a name="customization">4. Customization</a></h2>
+    
+    <p>
+      Normally it is not required to customize <span class=ite>iTe</span>. Customization allows you to control
+    </p>
+    <UL>
+      <LI>the appearance;
+      <LI><A HREF="bindings.html">the key bindings</A>;
+      <LI>internal limits;
+      <LI>the commands to invoke <em>perl</em>, <EM>dvips</EM> and <EM>gs</EM>.
+    </UL>
+
+    <P>
+      To customize <span class=ite>iTe</span>, you have to edit the configuration
+      file <tt>ite.conf</tt> in the <span class=ite>iTe</span> installation directory.
+    </p>
+
+    <p>
+      <b>For the expert user</b>: You can have any list of configuration files in any location. To achieve this, set
+      the variable <tt>ite-config-files</tt> to this list, for example
+    </p>
+    <pre>
+;; List of configuration files for iTe.
+(setq ite-config-files (list "~/ite/ite.conf" "~/ite/private.conf"))
+    </pre>
+    <p>
+      The default behaviour is to read the file <tt>ite.conf</tt> in the <span class=ite>iTe</span>
+      installation directory.
+    </p>
+
+
+    <h2>5. Testing</h2>
+    
+    <p>
+      At this stage you can test the installation:
+    </p>
+    <ol>
+      <li>Go to the <tt>tex</tt> directory;
+      </li>
+      <li>Execute the <tt>compile</tt> script to compile all L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X-files;
+      </li>
+      <li>Open one of the L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X-files with (X)Emacs and 
+	<a href="invocation.html">invoke</a> <span class=ite>iTe</span>.
+      </li>
+    </ol>
+    
+    <h2>6. (L<SUP><SMALL>A</SMALL></SUP>)T<SMALL>E</SMALL>X Includes</h2>
+    
+    <p>
+      The T<SMALL>E</SMALL>X installation will have to find the files <tt>ite.tex</tt> and <tt>ite.sty</tt>
+      in iTe's <tt>tex</tt>-directory.
+      We recommend that you copy these files to a directory which is already searched by TeX. This could be
+      <tt>/usr/share/doc/.TeX</tt> or <tt>~/.TeX</tt> on a Unix platform. The environment variable
+      <tt>TEXINPUTS</tt> lists all directories that are searched.
+    </p>
+    <p>
+      Alternatively, but not recommended, you can make TeX search in an additional location, such as
+      in the installation directory of <span class=ite>iTe</span>. To do so, you will have to modify the
+      <tt>TEXINPUTS</tt> environment variable or use a tool provided by the TeX distribution of your
+      choice. For example, if you are using MiKTeX, you can use its <em>Options</em>-tool to add the library.
+      Select the <em>Roots</em> tab and add the path to the iTe-distribution to the list of
+      TEXMF root directories. Then refresh the file name database and exit the utility.
+    </p>
+
+    <div id='TIMESTAMP' style='font-size:small'><hr/>Last modified by <A HREF='http://www.decatur.de/wolfgang'>Wolfgang K&uuml;hn</a> on May 17 2005</div>
+  </BODY>
+</HTML>

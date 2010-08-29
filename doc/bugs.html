@@ -1,0 +1,248 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+  <HEAD>
+    <TITLE>Bugs and Feedback</TITLE>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <LINK REL="STYLESHEET" HREF="manual.css">
+    <style type="text/css">
+      pre.code { font-family:Helvetica; padding-left:1cm; }
+    </style>
+  </HEAD>
+  <BODY>
+    <p>
+      <B>Next:</B> <A HREF="news.html">What is new</A>
+      <B>Up:</B> <A HREF="manual.html">iTe</A>
+      <B>Previous:</B> <A HREF="error_messages.html">Error Messages</A>
+    </p>
+    
+    <H1>Bugs and Feedback</H1>
+    
+    <h3>Reporting bugs</h3> 
+    <p>
+      Before you report a bug to me at <a href="mailto:wolfgang@decatur.de">wolfgang@decatur.de</a>,
+      please download the newest version of <span class=ite>iTe</span> and check if the bug persists.
+      Note that there may be a <a href="http://www.decatur.de/ite">most recent (beta) release</a>, including bug reports and workarounds.
+    </p>
+    <p>
+      Also check the following <B>bug list</B>. If you do report a bug, please provide the following, if possible:
+    </p>
+    <UL>
+      <LI>Version of <span class=ite>iTe</span>:
+      <LI>Version of <TT>Emacs</TT> or <TT>XEmacs</TT>:
+      <LI>Version of <TT>dvips</TT>:
+      <LI>Version of <TT>gs</TT>:
+      <LI>Version of <TT>perl</TT>:
+      <LI>Does the demo run?
+      <LI>Concise description of bug:
+      <LI>Any idea how the bug may be fixed: 
+    </UL>
+    
+    <h3>Bug list for iTe 3_0</h3>
+    <dl>
+      <dt>BUG</dt>
+      <dd>Latex style <tt>import.sty</tt> is incompatible with iTe.</dd>
+      <dt>FIX</dt>
+      <dd>Install Version 3_1 or in file <tt>tex/ite.sty</tt>, replace the line
+	<pre>
+          \def\ite@input#1{\message{ITEKEYOPEN}\iteinput#1\message{ITEKEYCLOSE}}
+	</pre>
+	by the line
+	<pre>
+          \def\ite@input#1{\message{ITEKEYOPEN}\iteinput{#1}\message{ITEKEYCLOSE}}
+	</pre>
+      </dd>
+    </dl>
+    
+    <h3>Bug list for iTe 2_20</h3>
+    <dl>
+      <dt>BUG</dt>
+      <dd>Newer versions of Gnu Emacs (probably >21.2) break iTe's menubar.
+      </dd>
+      <dt>FIX</dt>
+      <dd>Install Version 3_0
+      </dd>
+      <dt>BUG</dt>
+      <dd>Newer versions of dvips(k) (probably >5.90) will produce invalid PostScript code.
+      </dd>
+      <dt>FIX</dt>
+      <dd>Install Version 3_0 or in file <tt>ite.ps</tt>, insert the line
+	<pre>
+           TeXDict begin
+	</pre>
+	before the line
+	<pre>
+           ITEDict begin
+	</pre>
+      </dd>
+    </dl>
+    
+    <h3>Bug list for iTe 2_15</h3>
+    <dl>
+      <dt>BUG</dt>
+      <dd>On recent Linux installations, no ghostscript window appears after iTe is invoked.
+      </dd>
+      <dt>FIX</dt>
+      <dd>Install Version 2_20 or in file ite.el, replace the line<br> 
+	<pre class=code>
+	(defcustom ite-gs-command "gs -c /iTeInit == flush -"
+	</pre>
+	by the line<br>
+	<pre class=code>
+	(defcustom ite-gs-command "gs -sDEVICE=x11 -c /iTeInit == flush -"
+	</pre>
+	Thanks to Heribert Weigert.
+      </dd></dl>
+    
+    <h3>Bug list for iTe 2_1 (June 2000)</h3>
+    <dl>
+      <dt>BUG</dt>
+      <dd>iTe either fails to start up or displays initial pages
+	which do not contain iTe blocks.</dd>
+      <dt>FIX</dt>
+      <dd>Install Version 2_15 or in file ite.pl, replace the line<br> 
+	<pre class=code>until ( $. &gt;= @pages[0]-&gt;{BEGINLINE} ) {</pre>
+	by the line<br>
+	<pre class=code>until ( /%%Page:/ ) {</pre>
+      </dd></dl>
+
+    <h3>Bug list for iTe 2_01 (December 1999)</h3>
+    <dl>
+      <dt>BUG</dt>
+      <dd>On some window managers, an error is signaled if
+	the iTe online help is accepted on startup.</dd>
+      <dt >FIX</dt>
+      <dd>Do not accept. You can invoke the online help later
+	by typing ´h´ or using the iTe menu.</dd>
+    </dl>    
+    
+    <h3>Bug list for iTe 2_0 (November 1999)</h3>
+    <dl>
+      <dt>BUG</dt>
+      <dd>The <tt>\include</tt> macro does not work.</dd>
+      <dt>FIX</dt>
+      <dd>Replace the following line in ite_tex or ite.sty
+	<pre class=code>
+\def\include#1{\message{ITEKEYOPEN}\iteinclude#1\message{ITEKEYCLOSE}}
+	</pre>
+	by
+	<pre class=code>
+\def\include#1{\message{ITEKEYOPEN}\iteinclude{#1}\message{ITEKEYCLOSE}}
+	</pre></dd>
+      
+      <dt>BUG</dt>
+      <dd>The Makefile is broken.</dd>
+      <dt>FIX</dt>
+      <dd>Replace the following line in the Makefile
+	<pre class=code>
+-e "s|iTeDocPath|$(srcdir)/doc" \
+	</pre>
+	by
+	<pre class=code>
+-e "s|iTeDocPath|$(srcdir)/doc|" \
+	</pre></dd>
+    </dl>
+    
+    <h3>Bug list for iTe 1_4 (May 1999)</h3>
+    
+    <dl><dt>BUG</dt>
+      <dd>Unbalanced parenthesis in the (La)TeX log-file throws iTe
+	into an endless loop.</dd>
+      <dt>FIX</dt>
+      <dd>Install iTe 2_0.</dd>
+    </dl>
+    
+    <dl><dt>BUG</dt>
+      <dd>Using the <tt>seminar</tt> package, iTe gets the scaling
+	wrong in some cases.
+      </dd>
+      <dt>FIX</dt>
+      <dd>Install iTe 2_0.</dd>
+    </dl>
+    
+    <h3>Bug list for iTe 1_3 (April 1999)</h3>
+    
+    <dl><dt>BUG</dt>
+      <dd>In <tt>test-basic.tex</tt>, the iTe package should be
+	loaded without the <tt>[graphics]</tt> option.
+      </dd>
+      <dt>FIX</dt>
+      <dd>Remove the option.</dd>
+    </dl>
+    
+    <dl><dt>BUG</dt>
+      <dd>For Plain TeX only: iTe does not work
+	correctly if <tt>\magnification</tt> values different from 1000
+	are used.
+      </dd>
+      <dt>FIX</dt>
+      <dd>There is no work-around.</dd>
+    </dl>
+
+    <h3>Bug list for iTe 1_2 (Feb 1999)</h3>
+
+    <dl><dt>BUG</dt>
+      <dd> Perl script does not handle big (>ite-ps-limit bytes) iTe objects
+	(reported by Torben Hoffmann).
+      </dd>
+      <dt>FIX</dt>
+      <dd> In <code>/ite/rsc/ite.pl</code>, replace the line
+	<pre class=code>print $fh "\n($FN) run\n";</pre>
+	by
+	<pre class=code>print PAGE "\n($FN) run\n";</pre></dd>
+    </dl>
+
+    <dl><dt>BUG</dt>
+      <dd><code>make install</code> cannot handle relative path names
+	for <code>texdir</code> and <code>lispdir</code>.
+      </dd>
+      <dt>FIX</dt>
+      <dd>Use absolute path names.</dd>
+    </dl>
+
+    <dl><dt>BUG</dt>
+      <dd>iTe fails to parse the (La)TeX log file correctly when
+	<code>\tracingmacros</code> is set.
+      </dd>
+      <dt>FIX</dt>
+      <dd>Don't use <code>\tracingmacros</code> when running iTe.</dd>
+    </dl>
+
+
+    <h3>Bug list for iTe 1_1 (Aug 1998)</h3>
+
+    <dl><dt>BUG</dt>
+      <dd>iTe scrambles macros in the TeX source that
+	start with <code>\ite</code> and do not continue with an 'm', such
+	as <code>\iterate</code>.</dd>
+      <dt>FIX</dt> <dd>Replace the single
+	occurrence of <code>[^m]</code> in ite.el by <code>[^a-zA-Z]</code>.</dd>
+    </dl>
+    
+    <dl><dt>BUG</dt> 
+      <dd>Pages are displayed but
+	immediately erased (GhostScript version 5_50).</dd>
+      <dt>FIX</dt>
+      <dd>Replace all two occurences in 'ite.el' of <code>copypage</code> by
+	<code>flushpage</code>.
+      </dd> </dl>
+    
+    <dl><dt>BUG</dt> 
+      <dd>Minor modes are switched off by iTe.</dd>
+      <dt>FIX</dt> <dd>Invoke minor modes
+	with the optional argument 't'. For example
+	<pre class=code>
+         (add-hook 'latex-mode-hook '(lambda () (interactive) 
+            (outline-minor-mode t))) 
+	</pre>
+	instead of 
+	<pre class=code>
+         (add-hook 'latex-mode-hook 'outline-minor-mode) 
+	</pre>
+      </dd>
+    </dl>    
+
+    <div id='TIMESTAMP' style='font-size:small'><hr/>Last modified by <A HREF='http://www.decatur.de/wolfgang'>Wolfgang K&uuml;hn</a> on May 17 2005</div>
+    
+  </BODY>
+</HTML>
+

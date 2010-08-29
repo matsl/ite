@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+    Ant build file for iTe.
+    Time-stamp: <2005-01-09 21:35:04 wolfgang>
+   
+    Author: Wolfgang Kuehn
+
+    This file is for developers only.
+ 
+    The 'build' target will
+    a) Create in the base directory a zipped homepage for the iTe distribution;
+    b) For testing purposes, create in the ${user.home}/public_html directory, the
+       homepage for the iTe distribution;
+    c) For testing purposes, create in the parent directory the directory
+       'ite' containing the user distribution.
+    
+    To build and deploy a distribution, following these steps:
+    a) Set the property "version" to the appropriate release number;
+    b) Issue "ant build";
+    c) Deploy the zipped homepage to the web server.
+    
+-->
+
+<project basedir="." default="default" name="iTe">
+
+    <!-- The value must be suitable to be part of a file name, i.e. must not contain a dot. -->
+    <property name="version" value="3_1"/>
+    
+    <!-- The temporary directory to use. Only change this property if you wish to use
+         a directory different from the system default. -->
+    <property name="tempdir" value="${java.io.tmpdir}"/>
+    
+    <!-- These properties should stay fixed. -->
+    
+    <!-- Name of the distribution. This is the name of the root directory of the archives. -->
+    <property name="distName" value="ite"/>
+    <!-- The base token used to construct the 3 different archive names. -->
+    <property name="archiveName" value="ite_${version}"/>
+    <!-- The temporary directory in which replacement and zipping takes place. -->
+    <property name="targetdir" value="${tempdir}/${distName}"/>
+
+    <target name="default">
+        <echo>
+      Usage:
+      build      - Compiles and builds the distribution
+      compile    - Compiles the tex files
+      clean      - Cleans all generated files
+        </echo>
+    </target>
+  
+    <target name="build" depends="compile">
+        <!-- Clean test installation. -->
+	<delete dir="../${distName}"/>
+	
+        <!-- Clean web-server archive. -->
+        <delete file="www_${archiveName}.zip"/>
+	
+	<!-- Clean web-server distribution. -->
+        <delete dir="~/public_html/ite"/>
+        
+	
+	<!-- Create a 'tag'-file -->
+	<tstamp>
+            <format property="NOW" pattern="dd-MMMM-yyyy hh:mm:ss" locale="en"/>
+        </tstamp>
+        <echo message="iTe Release_${version} build on ${NOW}" file="release_${version}.txt"/>
+	
+	<!-- Clear and create temporary directory -->
+        <delete dir="${targetdir}"/>
+        <mkdir dir="${targetdir}"/>
+        
+        <!-- For the user distribution, we need to replace all occurences of
+	     the tokens _ITEVERSION_ and _TODAY_ on a copy of the source. -->
+        <copy todir="${targetdir}/src">
+            <fileset dir="." includes="*.*, doc/**/*, lib/**/*, tex/**/*"
+	                     excludes="ant.bat, tex/ite.ins, tex/ite.dtx, build.xml, **/*.log, **/.*"/>
+        </copy>
+        
+        <replace dir="${targetdir}/src">
+            <include name="**/*"/>
+            <replacefilter token="_ITEVERSION_" value="${version}"/>
+            <replacefilter token="_TODAY_" value="${TODAY}"/>
+        </replace>
+
+        <!-- This is already the user distribution. -->
+	<zip destfile="${targetdir}/${archiveName}.zip">
+            <zipfileset dir="${targetdir}/src" prefix="${distName}"/>
+        </zip>
+        
+        <!-- This is the developer distribution, where we also ommit all compiled files. -->
+        <zip destfile="${targetdir}/${archiveName}_src.zip">
+            <zipfileset 
+                prefix="${distName}"
+                dir="."
+                includes="*.*, doc/**/*, lib/**/*, tex/**/*, build.xml"
+                excludes="ant.bat, **/*.log, **/.*, tex/ite.sty, tex/ite.tex"/>
+        </zip>
+	
+	<!-- Finally, we build the web-server distribution. -->
+
+        <!-- Pack distribution and the documentation into one single meta-distribution. -->
+        <zip destfile="www_${archiveName}.zip">
+            <zipfileset dir="${targetdir}" prefix="${distName}" includes="*.zip"/>
+            <zipfileset dir="${targetdir}/src/doc" prefix="${distName}"/>
+        </zip>
+	
+        
+	<!-- Unzip user distribution so it can be tested conviniently -->
+	<unzip src="${targetdir}/${archiveName}.zip" dest="../"/>
+
+
+        <!-- Deploy to web server -->
+	<unzip src="www_${archiveName}.zip" dest="${user.home}/public_html"/>
+
+    </target>
+
+    <!-- Create the files tex/ite.sty and tex/ite.tex -->
+    <target name="compile">
+        <exec executable="tex" dir="tex">
+          <arg line="ite.ins"/>
+        </exec>
+    </target>
+
+    <target name="clean">
+        <delete>
+	    <fileset dir="." includes="release_${version}.txt, tex/ite.sty, tex/ite.tex, tex/ite.log, tex/*.aux, tex/*.dvi, tex/*.log"/>
+	</delete>
+    </target>
+
+</project>

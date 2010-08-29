@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+  <HEAD>
+    <TITLE>Large eps-Files</TITLE>
+    <LINK REL="STYLESHEET" HREF="manual.css">
+  </HEAD>
+  <BODY >
+    <div>
+      <B>Next:</B> <A HREF="bindings.html">Default Key-Bindings</A>
+      <B>Up:</B> <A HREF="manual.html">iTe</A>
+      <B>Previous:</B> <A HREF="plaintex.html">Plain TEX</A>
+    </div>
+
+    <H1>Large <EM>eps</EM>-Files</H1>
+    
+    <P>
+      <span class=ite>iTe</span> tries to deal with large, included <em>eps</em>-files gracefully. Files bigger than 200kb
+      (this is the default for the variable <TT>eps-limit</TT> and can be
+      <A HREF="installation.html#customization">customized</A>) are only displayed by their
+      bounding box. You can toggle between bounding box and full display using
+      <A HREF="bindings.html">a bound key</A>.
+    </p>
+
+    <P>
+      Alternatively, you can create low resolution <EM>eps</EM>-files
+      and include these instead. For example, if <TT>figure.eps</TT> is huge,
+      and <TT>figure.s.eps</TT> is its low resolution pendant, then you could 
+      use
+    </P>
+    <PRE>
+   \DeclareGraphicsExtensions{.s.eps,.eps}
+   \includegraphics{figure}
+    </PRE>
+    <P>
+      while using <span class=ite>iTe</span> interactively, but uncommenting the first line for
+      printing.
+    </p>
+
+    <div id='TIMESTAMP' style='font-size:small'><hr/>Last modified by <A HREF='http://www.decatur.de/wolfgang'>Wolfgang K&uuml;hn</a> on Mar 27 2005</div>
+</BODY>
+</HTML>
+

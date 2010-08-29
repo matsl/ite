@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+  <HEAD>
+    <TITLE>Taming the Window Manager</TITLE>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <LINK REL="STYLESHEET" HREF="manual.css">
+  </HEAD>
+  <BODY >
+    <div>
+      <B>Next:</B> <A HREF="example.html">Real World Example</A>
+      <B>Up:</B> <A HREF="manual.html">iTe</A>
+      <B>Previous:</B> <A HREF="bindings.html">Default Key-Bindings</A>
+    </div>
+
+    <H1>Taming the Window Manager (Unix only)</H1>
+    
+    <P>
+      Sometimes the Unix window manager is too attentive and catches key events
+      before they get to <TT>(X)Emacs</TT>, notably the `ALT arrow' keys. You
+      either rebind those keys through <a href="installation.html#customization">customization</a>,
+      or you have to edit the resource file of the window manager to suppress this behavior.
+      For example, if you use the <EM>fvwm</EM> window manager, then add/edit the
+      following lines to/in your '.fvwmrc' file:
+    </P>
+    <PRE>
+# press arrow + control anywhere, and scroll by 1 page
+Key Left        R       C       Scroll -100 0
+Key Right       R       C       Scroll +100 +0
+Key Up          R       C       Scroll +0   -100
+Key Down        R       C       Scroll +0   +100
+
+# press arrow + meta key, and scroll by 1/10 of a page
+Key Left        R       M       Scroll -10 +0
+Key Right       R       M       Scroll +10 +0
+Key Up          R       M       Scroll +0   -10
+Key Down        R       M       Scroll +0   +10
+    </PRE>
+
+    <P>
+      A different problem occurs if your X11 system requires the
+      specification of width and height as options to ghostscript.  If the
+      default size of the ghostscript window is wrong on your system, please
+      add the option '-g550x720' to the <tt>gs-command</tt> configuration variable.
+    </p>
+
+    <div id='TIMESTAMP' style='font-size:small'><hr/>Last modified by <A HREF='http://www.decatur.de/wolfgang'>Wolfgang K&uuml;hn</a> on Mar 27 2005</div>
+  </BODY>
+</HTML>

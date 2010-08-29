@@ -1,0 +1,40 @@
+% 
+% Test target:
+%   Basic iTe functionality in conjunction with Plain TeX.
+%
+% Test conjecture:
+%   Initially, all iTe-objects align correctly.
+%   Manipulations (translate, rotate, scale, zoom, etc.) will
+%   perform as documented.
+%
+% Test procedure:
+%   Compile and invoke iTe on this file. 
+%
+
+\input epsf.tex
+\input ite.tex
+
+\magnification\magstep2
+
+\noindent\beginiteblock(\hsize,10cm)
+\ITE(0 0 0 1)\epsffile{sc.eps}
+\ITE(494 367 180 1.728)\grabber{5}
+\ITE(360 357 0 1.728)$\sin x$
+\ITE(348 232 180 1.728)\grabber{5}
+\ITE(205 222 0 1.728)$\cos x$
+\ITE(204 445 0 1.728)\grabber{5}
+\ITE(270 436 0 1.728)$({1\over\sqrt2},{1\over\sqrt2})$
+\enditeblock
+
+\bye
+
+
+
+
+
+
+
+
+
+
+

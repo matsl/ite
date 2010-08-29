@@ -1,0 +1,775 @@
+<html>
+<body>
+<pre>
+QUESTION:
+
+Return-Path: <ijtrotts@ucdavis.edu>
+Sender: ijtrotts@ucdavis.edu
+Date: Mon, 22 Jun 1998 20:07:09 -0700
+Subject: iTe bug
+
+Hello!  I just ran the iTe demo and found what appears to 
+be a bug.  After xemacs and ghostscript came up the cursor
+started to change numbers in the document but the ghostscript
+window remained blank for the entire demo.  Do you know why
+this happened?
+
+thanks,
+Issac
+
+-- 
+Issac Trotts
+mailto:trotts@cs.ucdavis.edu
+homepage: http://graphics.cs.ucdavis.edu/~trotts
+
+
+ANSWER:
+
+Hello,
+
+I had a bug with these symptoms once, and I fixed it on all platforms
+listed in the manual. Today I discovered that the demo does not run
+with Emacs, but I fixed it. You are probably using XEmacs.  The demo
+is a hard exercise for the Emacs-family, which is not really intended
+for these kind of animations. If the example works via (see manual)
+
+    > latex example.tex
+    > xemacs -load ite.el
+
+then iTe runs on your platform. If the example does not run, please let
+me know. Otherwise, the demo isn't working for some strange emacs-internal
+reason. But then it's just a demo.
+
+Wolfgang
+
+
+
+QUESTION:
+
+Thanks for your advice about iTe.  I'll give that a try.  In the
+meantime, is there any way to use iTe without XEmacs?
+I like to use vi to conserve memory.
+
+ANSWER:
+
+Of course you can use Emacs, which is somewhat smaller. 
+iTe is mainly written in emacs-lisp, so vi will definitely
+not do.
+
+Wolfgang
+
+
+QUESTION:
+Manuel Hölß wrote:
+
+Dear Mr. Kühn.
+ A few days ago I bekame a hint on your iTe. I think it's a great Idea
+and it
+makes  it very easy to create and maniplulate Graphics in TeX.
+ I first had it running on a DEC-Workstation without problems but on my
+linux-PC
+(SuSE -Linux, Kernel 2.0.34, xemacx 20.4, devips 5.58, gv 4.03) it
+behaved a little strange:
+
+The blue box indicating the frame of the iteblock-environment and the
+motion of the objects
+in the gs-window have the double size, they should have.
+The result of this is, that when a object is placed correctly in the
+gs-window, the Numbers
+in the argument change only half of the distance teh object was moved.
+So rcompiling the tex-file
+results in on output, where all the objects are moved back half the
+distance they were moved.
+Perhaps you have an Idea, where this problem may come from ? I'd be glad
+if you could tell me.
+
+An other point I wanted to mention is that there is an easy possibility
+to work around one restriction
+given in sect 13 of the manual. It's the point, that an iteblock may not
+appere in includet files.
+Just setting a symbolic link allows to use an iteblock in included
+files:
+>  ln -s <masterfile>.dvi <inputfile>.dvi
+Perhaps it's not a very elegant way to solve the problem, but it works.
+
+
+ANSWER
+
+Hallo,
+
+Die neuste Version (1.1) von iTe ist jetzt fertig. Bitte teilen Sie mir mit, ob der Fehler behoben ist.
+
+Die von Ihnen vorgeschlagene Moeglichkeit, iteblock Umgebungen in
+include files zu ermoeglichen, funktioniert so nicht. Die naechste
+Version von iTe (nicht bis Anfang Oktober) wird aber Master und Slave-
+files unterstuetzen.
+
+Wolfgang
+
+
+QUESTION
+
+Jan Vroonhof wrote:
+
+Wow! nice idea, it is certainly cool.
+
+However I found a bug/have a few remarks.
+
+(iTe 1.0, XEmacs 21.0preX-mule or XEmacs 20.4-nomule)
+
+1. First the bug
+
+start XEmacs, load ite.el
+C-x C-f example.tex
+M-x ite
+C-x o  to switch to ite message buffer window.
+C-x b *scratch* to hide the message buffer
+C-x o to switch back to example.tex window
+h
+
+gives
+  Wrong type argument: windowp, nil
+
+
+Suggested solution: The problem lies in the ite-message
+
+(defun ite-message (s)
+  (save-excursion
+    (let ((w (selected-window)))
+      (setq ite-message-buffer (get-buffer-create "iTe Message"))
+      (select-window (get-buffer-window ite-message-buffer))
+;(set-buffer ite-message-buffer)
+      (goto-char (point-max))
+      (insert s)
+      (end-of-buffer)
+      (select-window w))))
+
+when ite-message-buffer is not displayed in any window
+get-buffer-widnow gives nil, which makes select-window barf.
+You probably just want some thing like
+
+(switch-to-buffer-other-window (get-buffer-create "iTe Message"))).
+
+The more standard way would be to use (with-output-to-temp-buffer
+
+(defun ite-message (s)
+  (with-output-to-temp-buffer "iTe Message"
+    (princ s)))
+
+2. ite.el contains a few things that are generaly considered to be bad 
+   taste, like messing with debug-on-error, or this....
+
+        (if (equal (nth 2 command-line-args) "ite.el") (ite))
+
+3. Just as suggestion. Since all the magic seems to lie in the in place 
+   editing of the dvips output, may I put on the whish list
+   a. Make ite a minor mode such that ite can use all the AucTeX magic to
+      handle multifile document etc.
+   b. Do a away with all the temp files and have Emacs pipe from dvips
+      and into gs.
+
+Keep up the good work. Don't let my criticims get to you, they are
+meant to be constructive.
+
+I have to go we have a power cut off soon,
+
+
+Jan
+
+ANSWER
+
+Hello,
+
+thank you for your remarks concerning iTe.
+
+Remark 1:
+%start XEmacs, load ite.el
+%C-x C-f example.tex
+%M-x ite
+%C-x o  to switch to ite message buffer window.
+%C-x b *scratch* to hide the message buffer
+%C-x o to switch back to example.tex window
+%h
+%
+%gives
+%  Wrong type argument: windowp, nil
+%
+%Suggested solution: The problem lies in the ite-message
+%
+%(defun ite-message (s)
+%	:
+%	:)
+%
+%when ite-message-buffer is not displayed in any window
+%get-buffer-widnow gives nil, which makes select-window barf.
+%You probably just want some thing like
+%
+%(switch-to-buffer-other-window (get-buffer-create "iTe Message"))).
+%
+%The more standard way would be to use (with-output-to-temp-buffer
+
+The problem is that I want that the message window always scrolls to the
+end of the buffer. This is not the case by simply defining. The bug is
+fixed in the current version 1.1.
+
+%(defun ite-message (s)
+%  (with-output-to-temp-buffer "iTe Message"
+%    (princ s)))
+
+Remark 2:
+% ite.el contains a few things that are generaly considered to be bad 
+%   taste, like messing with debug-on-error, or this....
+%
+%        (if (equal (nth 2 command-line-args) "ite.el") (ite))
+
+I admit this is pretty ugly. It is only needed for the demo, but
+I couldn't find a way around it. debug-on-error is only switch on
+by users who know what they are doing anyway.
+
+Remark 3:
+%   Just as suggestion. Since all the magic seems to lie in the in place 
+%   editing of the dvips output, may I put on the whish list
+%   a. Make ite a minor mode such that ite can use all the AucTeX magic to
+%      handle multifile document etc.
+%   b. Do a away with all the temp files and have Emacs pipe from dvips
+%      and into gs.
+
+For a) I agree. iTe will handle mulifiles from version 1.2 on(not
+before beginning of October). For b), I tried it but it turned out to
+be very, very slow to pipe huge junks of PostScript from Emacs to
+gs. I don't know where the bottleneck occurs. Therefore I implemented
+a file interface instead of pipes. However, it is possible to do away
+with all the temp files using some PostSript hacks, given the time.
+
+
+Wolfgang
+
+
+QUESTION:
+
+Nicolas FRANCOIS (nicolas.francois@hol.fr) wrote:
+
+It happens that on zin95, launching the command
+
+gswin32 -Ic:\gstools\gs5.03;c:\gstools\gs5.03\fonts example.ps
+
+works fine to preview the file.
+
+But when I write 
+
+(defvar ite-gs-command "gswin32 -Ic:\gstools\gs5.03;c:\gstools\gs5.03\fonts " 
+Message 2/33  From Nicolas FRANCOIS                    Sep 2, 98 03:20:26 am +0200
+
+
+Return-Path: <nfrancoi@hol.fr>
+X-Sender: nfrancoi@pop.hol.fr (Unverified)
+Date: Wed, 02 Sep 1998 03:20:26 +0200
+Subject: progresses
+
+It happens that on zin95, launching the command
+
+gswin32 -Ic:\gstools\gs5.03;c:\gstools\gs5.03\fonts example.ps
+
+works fine to preview the file.
+
+But when I write 
+
+(defvar ite-gs-command "gswin32 -Ic:\gstools\gs5.03;c:\gstools\gs5.03\fonts " 
+  "Shell command to invoke ghostscript.")
+
+and carefully add 
+
+  (setq ite-process 
+        (start-process-shell-command "ite" 
+          ite-message-buffer ite-gs-command ite-name-ps))
+                                           -----------
+
+to the ite function, I manage to launch gs, but it doesn't seem to notice
+the option -I because it returns : 'gs can't find gs_init.ps', which happen
+to reside in c:\gstools\gs5.03 !
+
+The command line works from the shell (in 'execute' menu, I mean), but not
+from within NTemacs ! Funny, isn't it ?
+
+Well, if you manage to find a solution, you will be authorized to add 'PC
+zin95 + NTemacs + dvips + gswin32' on your hardware compatibility list !
+
+Oh, I downloaded the version 1.11, but don't know the magic formula to
+install it ! looks like a Linux installation process !? (unfortunately, my
+fucking machine refuses to print on my fucking Zin-specific Laser printer
+under Linux :-(=) ).
+
+So I'm still using version 1.00 (is that so ?).
+
+Hope to read you soon. Sorry for poor english, in France you have rarely
+the occasion to practice english.
+
+
+ANSWER:
+
+Hello,
+
+iTe Version 1.1 is available since yesterday evening.  However,
+I uploaded a incomplete version 1.1 already on monday, which you might
+have downloaded. So please load the correct version and install it
+with the configure script (real easy) after unpacking. If the
+configure script doesn't work on your machine, simply replace
+the following line in 'ite.in'
+
+(defvar ite-load-path "."
+  "Directory from which iTe is loaded. This variable is set by the configure script.")
+
+by the line
+
+(defvar ite-load-path "iTeDirectory"
+  "Directory from which iTe is loaded. This variable is set by the configure script.")
+
+where iTeDirectory is the ABSOLUTE path of the directory in which iTe
+resides, for example
+
+(defvar ite-load-path "/home/myname/ite"
+  "Directory from which iTe is loaded. This variable is set by the configure script.")	
+Then rename 'ite.in' to 'ite.el'.
+ 
+
+Now set in 'ite.el'
+
+(defvar ite-gs-command 
+	"gs - -Ic:\gstools\gs5.03;c:\gstools\gs5.03\fonts")
+
+and RESTART Emacs. If you tried exactly this before and it didn't
+work, then you have to tell me what went wrong. Also, please don't use
+gsview.  Gsview is a previewer and not a PostScript interpreter like
+gs. The latter is needed.
+
+I am happy to make this work for you,
+
+Wolfgang
+
+QUESTION
+
+
+ANSWER
+
+Hello, 
+
+Please put the "-" to the end, i.e.
+
+(defvar ite-gs-command "gswin32 -Ic:\gstools\gs5.03;c:\gstools\gs5.03\fonts -")
+
+Quote use.txt of gs distribution:
+
+    -
+                This is not really a switch.  It indicates to Ghostscript
+                that the standard input is coming from a file or a pipe.
+                Ghostscript reads from stdin until reaching end-of-file,
+                executing it like any other file, and then continues
+                                                  --------
+                processing the command line.  At the end of the command
+                line, Ghostscript exits rather than going into its
+                interactive mode.
+
+I don't know if the (not) doubling of "\" is the cause, but it might well be.
+
+You might also try
+
+(defvar ite-gs-command "set GS_LIB c:\gstools\gs5.03;c:\gstools\gs5.03\fonts; gswin32 -")
+
+if all fails. Please keep me posted.
+
+
+Wolfgang
+
+ANSWER
+Andrew Innes wrote:
+Message 1/39  From Andrew Innes                            Sep 3, 98 10:53:32 am +0100
+
+Return-Path: <andrewi@harlequin.co.uk>
+Date: Thu, 3 Sep 1998 10:53:32 +0100 (BST)
+To: nfrancoi@hol.fr
+Subject: Re: strange behaviour with process
+
+On Thu, 03 Sep 1998 04:08:31 +0200, Nicolas FRANCOIS <nfrancoi@hol.fr> said:
+>(defvar ite-gs-command "gswin32 - -Ic:\gstools\gs5.03;c:\gstools\gs5.03\fonts"
+
+You need to double the \'s when writing a lisp string.
+
+AndrewI
+
+QUESTION
+
+Nicolas FRANCOIS wrote
+
+Ok, now I can launch ghostscript (I have added the missing \ and put the
+option - at the end of the command line).
+
+The remaining problem is the following : the graphic window is empty ! I
+have tried to change the location of the example.ps file, and this is what
+I have discovered :
+
+- if I launch the command from the 'execute menu' :
+    gswin32 -Ic:\gstools\gs5.03;c:\gstools\gs5.03\fonts example.ps
+  with the example.ps file in \gstools\gs5.03, it works.
+
+- if I launch the same command with the example.ps file in /temp, gs shows
+a blank result (until there, no problem).
+
+- the attempts to execute ite result in an other blank window.
+
+Well, the problem seems to be that gs doesn't see the file, in a way or an
+other.
+
+What can I do more ?
+
+Note : I have tried ite.el under Linux, it works fine, but my Alt key
+doesn't work (I have a french keyboard, and the ESC key isn't the right key
+for certain functions). Someone works on both platforms ?
+
+ANSWER
+
+Hello,
+
+Ok, suppose you have set
+
+(defvar ite-gs-command 
+	"gswin32 -Ic:\\gstools\\gs5.03;c:\\gstools\\gs5.03\\fonts -")
+
+and iTe, at one point, executes
+
+(start-process-shell-command "ite" ite-message-buffer ite-gs-command)
+
+At this point, you should see an empty gs window, because no command
+or command line option was issued to load and run a ps file.
+
+At some other point, iTe issues a 
+
+      (ite-select-page 0)
+
+which should display the first page in the gs window. This is done by
+the commands ite-write, which writes the page to a temporary file in /tmp,
+and ite-run-close, which sends the command to gs to run this file.
+
+If the window stays empty, please set
+
+	(defvar ite-debug-level 1)
+
+and restart Emacs. You will then see some diagnostic output which tells
+you the reason why the file couldn't load.
+
+On problem could be that you don't have a /tmp directory on your machine.
+In this case, replace /tmp by /temp, or whatever.
+
+
+Concerning the ALT key: The ESC definitely doesn't work.
+Fortunately, you don't need the ALT key much. What I suggest is
+the following:
+Go to the *scratch* buffer and type in 
+
+	(if (fboundp 'events-to-keys)
+	  (events-to-keys (read-key-sequence ""))
+          (read-key-sequence ""))C-j
+
+followed by and "ALT uparrow". Here C-j is "Control j".
+
+The result will be something like 
+
+	[M-up]
+or
+	[(meta up)]
+
+Now replace [(meta up)] in the line
+
+(define-key ite-mode-map [(meta up)]
+	  (function (lambda () (interactive) (ite-move 0 1)))))
+
+by whatever you got. Voila, you rebound the key "ALT uparrow".
+
+Unfortunately (for the unresolved problem, not for me) I will now
+leave for vacation for 3 weeks (to France). I will check back with you
+on my return.
+
+Have a nice time
+
+Wolfgang
+
+
+QUESTION
+
+Sender: hoover@dmehpi-f.epfl.ch
+Date: Mon, 19 Oct 1998 12:58:00 +0200
+
+Hi.  I'm not sure if this is a iTe bug or an emacs bug, but I thought
+you might be interested.
+
+I have the following LaTeX hooks.
+
+(add-hook 'latex-mode-hook 'outline-minor-mode)
+(add-hook 'latex-mode-hook 'font-lock-mode)
+
+When I run iTe, the menus that
+correspond to outline mode disappear.  When I quit iTe, they don't
+come back.
+
+Thanks for iTe. Great program!
+
+Dave Hoover.
+
+
+ANSWER
+
+Hello,
+
+Thank you for reporting this to me. There is indeed a problem. A      
+quick fix is to replace the line
+
+(add-hook 'latex-mode-hook 'outline-minor-mode)
+
+by
+
+(add-hook 'latex-mode-hook '(lambda () (interactive)                  
+(outline-minor-mode t)))
+
+With this change the outline menue will not disappear. However, all
+text will "show" after quitting iTe.  I will try to fix this in the
+next version (1.2) of iTe.
+
+Wolfgang Kuehn
+
+QUESTION
+
+From: David Welton <davidw@gate.cks.com>
+Subject: iTe license
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.91.2
+Content-Length: 1400
+Status: RO
+
+Hi, I found your iTe program to be very nice, just what I was looking
+for.  Being a Debian GNU/Linux maintainer, I thought about making a
+Debian package for it, so that more people could use it.  I noticed
+the license is very non-free, though:
+
+ All files in this distribution are copyrighted. You are allowed to
+ freely copy and use these files for non-commercial use only.  Do not
+ redistribute a version which is incomplete or is changed in any way.
+ The author makes no representations about the suitability of this
+ software for any purpose. It is provided as is without expressed or
+ implied warranty.
+
+I'm curious if you have plans to change any of these terms, or might
+be convinced that there are good reasons to?  For instance, you say
+'non-commercial use only', yet you don't have prices for those who
+might wish to purchase it.  If you were interested in making it so
+that more people could use and participate in improvement of this
+software, you might consider using an 'Open Source'
+(www.opensource.org), or Free license.  If you are worried that people
+will distribute incomplete, or modified versions that reflect poorly
+on your work, you could put something that says that "modified
+versions must use a name other than 'iTe'", for example.
+
+Anyway, I thank you for your time,
+-- 
+David Welton                          http://www.efn.org/~davidw 
+
+        Debian GNU/Linux - www.debian.org
+
+
+ANSWER
+
+Hello,
+
+The copyright of versions 1.0 and 1.1 was chosen that strict because
+at the time I didn't know where the project would go.  Meanwhile it
+became clear that a) iTe is much appreciated by many TeX users, and
+that b) I will not be able to maintain iTe indefinitely.
+
+Version 1.2, which is completely rewritten and significantly
+extended, will therefore be covered under one of BSD/GPL/OSS/...
+licenses. It is due next week.
+
+Wolfgang Kuehn
+
+
+
+QUESTION
+
+From: Bruce Foster <bef@nwu.edu>
+Subject: iTe 1.1 Problem with make-temp-name in lisp program
+Content-Length: 1759
+Status: RO
+
+I am trying to install iTe for a general UNIX user situation. I have about
+25 machines, all sharing a common file system. Multiple users per machine,
+as well as multiple machines.
+
+In reviewing the configuration program, I discovered that the ite.el lisp
+program defines a variable named make-temp-name as /tmp/ite. I _assume_
+that this means that a file or directory with that name will be created.
+
+That approach is fine for a single-user UNIX system, but it fails if two
+people try to use iTe at the same time on the same system. It might fail if
+the SAME person tries to use iTe from two sessions at the same time.
+
+It would be best to use a unique file name for this variable. And it would
+be a good idea to point out this situation at configuration, because many
+systems do not want files created in /tmp by applications programs -- other
+filesystems should be used instead.
+
+I don't know enough about emacs and elisp to know how to fix this problem.
+The problem is serious enough to prevent me from installing iTe. So I'm
+calling your attention to it.
+
+Another configuration question. A path is altered to point to the directory
+that ite is configured from. There also seems to be a reference to the file
+ite_init.ps. Does that file have to be in the same directory that ite.el
+resides in?
+
+I would really like to make iTe available from the emacs site-lisp
+directory. If so, what other files have to be put in the same directory?
+
+Thanks for your assistance!
+
+Bruce Foster
+
+
+ANSWER
+
+Hello,
+
+
+>> In reviewing the configuration program, I discovered that the
+>> ite.el lisp program defines a variable named make-temp-name as
+>> /tmp/ite. I _assume_ that this means that a file or directory with
+>> that name will be created.
+
+There is no problem to run iTe on multi-user platforms. Even a single
+user can run several copies of iTe processes, provide each iTe runs
+from within a different (X)Emacs session. You assume wrongly that
+make-temp-name is a variable, where in fact it is a function.  Given
+an input string ("/tmp/ite" for example), it returns a unique file or
+directory name starting with, but not equal to, this string.  The
+ELisp manual says
+
+ - Function: make-temp-name STRING
+   This function generates a string that can be used as a unique
+   name.  The name starts with STRING, and ends with a number that is
+   different in each XEmacs process.
+
+          (make-temp-name "/tmp/foo")
+               => "/tmp/foo021304"
+
+   To prevent conflicts among different libraries running in the same
+   XEmacs, each Lisp program that uses `make-temp-name' should have
+   its own STRING.  The number added to the end of the name
+   distinguishes between the same application running in different
+   XEmacs processes.
+
+
+What (X)Emacs does is to append an id to the string that is derived
+from the process id of the currently running (X)Emacs process.
+
+>> many systems do not want files created in /tmp by applications
+>> programs -- other filesystems should be used instead.
+
+The next version of iTe (1.2) will first try to create temporary files
+in the directory pointed to by the environment variable TMPDIR, then
+in '/usr/tmp', then in '/tmp', and then in '.' if all fails. Would
+this be working in your setting?  A workaround for version 1.1 would
+be to replace the line
+
+ (setq s (make-temp-name "/tmp/ite"))
+
+in ite.el by 
+
+ (setq s (make-temp-name "/usr/tmp/ite"))
+
+for example.
+
+>> Another configuration question. A path is altered to point to the
+>> directory that ite is configured from. There also seems to be a
+>> reference to the file ite_init.ps. Does that file have to be in the
+>> same directory that ite.el resides in?
+
+No. Right now the only file that needs to be in 'ite-load-path' is
+'ite_init.ps'. The best way to install iTe globally is as follows:
+
+a) Put 'ite.el' to your site lisp directory, for example
+'/usr/local/share/emacs/site-lisp' and append the 'load-path' variable
+if necessary.
+
+b) Put 'ite_init.ps' to '/usr/local/share/emacs/etc/ite' and set 
+'ite-load-path' to this directory.
+
+c) Put 'ite*.tex' files at a place where TeX will find it, for example
+to '/usr/local/share/teTeX-0.4pl8/texmf/tex/generic/ite' if you are
+using teTeX, or set your TEXINPUTS environment variable accordingly.
+
+All other files in the distribution are not essential. You may put
+them to '/usr/local/share/ite', for example.
+
+Thank you for your contribution, 
+
+Wolfgang Kuehn
+
+
+QUESTION
+
+j.w.kluwer@filosofi.uio.no (Johan W. Kl|wer)
+Subject: iTe suggestion
+
+Dear Mr. Kühn,
+
+I just had the pleasure of putting your iTe package to work on a real
+problem, with great success. I really like the concept you have used
+in iTe---an elegant use of already available resources!
+
+Now, in the particular case I had to deal with, I did have a problem:
+iTe would never stop parsing the postscript file on top of which the
+LaTeX material was supposed to go. I tried making tea and looking out
+the window, editing the EPS file, nothing worked. The way out for me
+turned out to be this: Generate a bitmap from the EPS, substitute that 
+bibmap into the text for the iTe run, then put the EPS back into the text.
+
+It seems to me that EPS comes in many qualities, and problems are in
+my experience to be expected. The bitmap approach, however, can hardly 
+fail. Perhaps this simple workaround should be mentioned in the
+manual?
+
+All the best,
+
+ANSWER
+
+
+Hello,
+
+Yes, an eps document may fool iTe, and especially the longer ones.
+The next version of iTe handles eps files differently, and your
+problem will probably dissolve. Your approach with the bitmap is
+correct.  You can even assist from with your LaTeX code by saying
+
+\DeclareGraphicsExtensions{.b.eps,.eps}
+
+and then say
+
+\includegraphics{foo}.
+
+If the, presumably bit-mapped, file 'foo.b.eps' exists, it is
+included.  Otherwise the original 'foo.eps'. This way it is also
+possible to include huge eps files inside 'iteblock' environments and
+still achieve respond times suitable for interactive use.
+
+Before printing the file, don't forget
+to disable this feature, i.e., by
+
+%\DeclareGraphicsExtensions{.b.eps,.eps}
+
+Thank you for your contribution,
+
+Wolfgang Kuehn
+
+
+PS: Could you send me this 'wicked' eps file?
+</pre>
+</body>
+</html>

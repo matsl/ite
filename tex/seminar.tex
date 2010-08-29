@@ -1,0 +1,38 @@
+%     LaTeX file seminar.tex tests wether \magstep!=0 works.
+%
+%     Copyright (C) 1999 Wolfgang Kuehn
+
+
+\documentclass{seminar}
+\usepackage{graphics}
+\usepackage{ite}
+
+\slidesmag{2}
+
+\begin{document}
+
+%\begin{slide}
+\begin{iteblock}(\textwidth,9cm)
+\ITE(0 0 0 1)\includegraphics{sc.eps}
+\ITE(489 374 180 1.728)\grabber{5}
+\ITE(360 350 0 1.728)$\sin x$
+\ITE(450 132 180 1.728)\grabber{5}
+\ITE(280 115 0 1.728)$\cos x$
+\ITE(203 444 0 1.728)\grabber{5}
+\ITE(270 436 0 1.728)$(\frac1{\sqrt2},\frac1{\sqrt2})$
+
+\end{iteblock}
+%\end{slide}
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+

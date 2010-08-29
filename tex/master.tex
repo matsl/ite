@@ -1,0 +1,24 @@
+%
+% Test target:
+%   See file slave1.tex. Do not invoke iTe on this file.
+%
+
+\documentclass{article}
+\usepackage{trig}
+\usepackage{ite}
+
+\begin{document}
+
+\begin{iteblock}
+\ite Master block 1
+\end{iteblock}
+
+\input slave1.tex
+
+\begin{iteblock}
+\ite Master block 2
+\end{iteblock}
+
+\end{document}
+
+

@@ -1,0 +1,62 @@
+%
+% Test target:
+%   The (La)TeX source parser.
+%
+% Test conjecture:
+%   See document.
+%
+% Test procedure:
+%   Both compile and invoke iTe on this file. 
+%
+
+\documentclass{article}
+\usepackage{ite}
+
+\begin{document}
+
+\verb@ Parser should not find \ite statement here. @
+
+% Nor find \ite in comment.
+
+\begin{verbatim}
+And not in verbatim environment: \ite
+\end{verbatim}
+
+\begin{itebind}
+\begin{iteblock}(1cm,1cm)
+\ite Not in itebind environment
+\end{iteblock}
+\end{itebind}
+
+\beginitebind
+\begin{iteblock}(1cm,1cm)
+\ite Dito for Plain Tex itebind environment
+\end{iteblock}
+\enditebind
+
+% Do these confuse the parser
+itebind verb verbatim beginitebind
+
+% Or an itemize environment?
+\begin{itemize}
+\item asdasd
+\end{itemize}
+
+\begin{iteblock}(1cm,1cm)
+\ITE(0 0 0 1) Find me, I am the only!
+\end{iteblock}
+
+\end{document}
+
+
+\ite Ignore this one.
+
+
+
+
+
+
+
+
+
+

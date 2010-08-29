@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+  <HTML>
+  <HEAD>
+    
+    <META name="description" content="iTe, TeX authoring tool">
+    <META name="author" content="Wolfgang K&uuml;hn">
+    <META name="keywords" content="iTe, TeX, interactive, Emacs">
+    <LINK REL="STYLESHEET" HREF="manual.css">
+    
+    <TITLE>iTe, the interactive TeX editor</TITLE>
+  </HEAD>
+  <BODY>
+    
+
+    <table border="0" cellpadding="5" width="90%">
+      <tr>
+	<td>
+	  <table>
+	    <tr>
+	      <td class="menu">      
+		<A HREF="index.html">Home</a>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td class="menu">      
+		<A HREF="gallery.html">Gallery of examples</a>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td class="menu">
+		<A HREF="manual.html">Online manual</a>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td class="menu">
+		<A HREF="installation.html#download">Download iTe</a>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td class="menu">
+		<A HREF="news.html">What is new</a>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td class="menu">
+		<A HREF="bugs.html">Bug list</a> 
+	      </td>
+	    </tr>
+	  </table>
+	<td align=center>
+	  <table style="font-size:x-large">
+	    <tr>
+	      <td><img src="images/logo.gif" alt="iTe"></td>
+	      <td>Version _ITEVERSION_ (_TODAY_)</td>
+	    </tr>
+	    <tr>
+	      <td  colspan="2" align=right>
+		the <span style="font-weight:bolder">I</span>nteractive <span style="font-weight:bolder">T</span>ex <span style="font-weight:bolder">E</span>ditor
+	      </td>
+	    </tr>
+	  </table>
+	</td>
+      </tr>
+    </table>
+
+    
+      <p>
+	<b><BIG>Description</BIG></b>&nbsp;&nbsp; <span class="ite">iTe</span> is an
+	easy to use, interactive authoring tool for
+	L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X and
+	T<SMALL>E</SMALL>X documents.  With <span class=ite>iTe</span>, it is
+	possible to select arbitrary display fragments such as figures,
+	equations, labels, captions, etc. These fragments can then be
+	freely moved, rotated and scaled.  Existing tools are either
+	awkward to use (for example cryptic
+	L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X extensions), or
+	they produce results of poor quality (font of captions does not
+	match L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X font, for
+	example).  To the user, <span class=ite>iTe</span> is an easy to use
+	and effective tool which is a lot of fun.
+	
+      </p>
+    <p>
+      <img src="images/sc.gif" style="float:right">
+      <b><BIG>Example</BIG></b>&nbsp;&nbsp; Using <span class=ite>iTe</span>, it
+      took my then five year old daughter only a few minutes to typeset
+      the simple example to the right.
+	  
+    </p>
+    <p> 
+      <b><BIG>How does it work</BIG></b>&nbsp;&nbsp; The user actions
+      (translation, scaling and rotation) are simultaneously recorded
+      in the L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X source
+      file <strong>and</strong> displayed on the screen by an
+      asynchronous <EM>ghostscript</EM> process. What you see on the
+      screen is exactly what you get if the source is recompiled and
+      printed.
+    </p>
+    <p> 
+      <b><BIG>How to use it</BIG></b>&nbsp;&nbsp; Because
+      <span class=ite>iTe</span> is written in <EM>Emacs-lisp</EM>, it
+      integrates nicely in the editing process. Just call it during a
+      normal (X)Emacs session as many times as you want. Note however,
+      that <span class=ite>iTe</span> is not a WYSIWYG front end for
+      L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X, and
+      <span class=ite>iTe</span> does not change the way you use
+      L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X to typeset 95% of
+      your text.  But it will help you to manage the remaining 5% fast
+      with a high quality result.
+    </p>
+    <p>
+      <b><BIG>Platform</BIG></b>&nbsp;&nbsp;<span class=ite>iTe</span> should run on
+      every <EM>Unix</EM> and <EM>MS Windows</EM> platform meeting the
+      <a href="distribution.html#requirements">requirements</a>.
+    </p>
+
+    <p>
+      <b><big>(La)TeX related recources</big></b>
+    </p>
+    <ul>
+      <li><a href="http://www.tug.org">TUG</a>, the TeX Users Group. TUG
+	provides an organization for those who have an interest in systems 
+	for text typesetting and font design, and are users of TeX and
+	Metafont.
+      </li>
+      <li><a href="http://www.ctan.org">CTAN</a>, the Comprehensive TeX 
+	Archive Network. CTAN is a set of fully-mirrored ftp sites providing
+	the most complete, up-to-date TeX-related software possible.
+      </li>
+      <li><a href="http://sunsite.auc.dk/auctex">AUC TeX</a>, an extensible
+	package that supports writing and formatting TeX files for most
+	variants of GNU Emacs. AUC TeX is a nice package, and I suggest using
+	it in conjunction with <span class=ite>iTe</span>.
+      </li>
+      <li><a href="http://www.tug.org/tetex">teTeX</a>, a complete TeX 
+	distribution for UNIX compatible systems. You will probably have 
+	teTeX installed on your system. Consider to get it otherwise.
+      </li>
+      <li><a href="http://www.lyx.org">LyX</a>, a WYSIWYM style
+	document processor using LaTeX. <span class=ite>iTe</span> will not run under LyX,
+	and LyX does not provide the functionality of <span class=ite>iTe</span>.
+      </li>
+    </ul>
+    
+    <div id='TIMESTAMP' style='font-size:small'><hr/>Last modified by <A HREF='http://www.decatur.de/wolfgang'>Wolfgang K&uuml;hn</a> on Apr  4 2005</div>
+</BODY>
+</HTML>
+

@@ -1,0 +1,26 @@
+%
+% Test target:
+%   AUCTeX multifile capability.
+%
+% Test conjecture:
+%   Of the five iTe-blocks associated with master.tex, only
+%   the two blocks in this file are active in an iTe-session.
+%
+% Test procedure:
+%   Compile file master.tex, but invoke iTe on this file. 
+%
+
+\begin{iteblock}
+\ITE(0 0 0 1) Active block 1
+\end{iteblock}
+
+\input slave2.tex
+
+\begin{iteblock}
+\ITE(0 0 0 1) Active block 2
+\end{iteblock}
+
+
+% Local Variables:
+% TeX-master: "master"
+% End:

@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<TITLE>LATEX Commands</TITLE>
+<LINK REL="STYLESHEET" HREF="manual.css">
+</HEAD>
+<BODY >
+
+    <B> Next:</B> <A HREF="plaintex.html">Plain TEX</A>
+    <B> Up:</B> <A HREF="manual.html">iTe</A>
+    <B> Previous:</B> <A HREF="invocation.html">Invocation</A>
+    
+    <H1>L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X Commands</H1>
+    
+    <pre class="command">\usepackage[graphics|dvi]{ite}</pre>
+    
+      Load the <span class=ite>iTe</span> package. Do not use <code>`\input ite.tex'</code> unless
+      your format is <A HREF="plaintex.html">Plain T<SMALL>E</SMALL>X</a>. 
+
+    <p>
+      Example:
+    <PRE>
+    \usepackage{ite}</PRE>
+    
+    The <TT>ite</TT> package can have one of the two following options:
+    <DL>
+      <DT><STRONG>graphics</STRONG>
+      <DD>This will use the rotation and scaling operations of
+	the <TT>graphics</TT> or <TT>graphicx</TT> package. One of these packages
+	is required. The <EM>dvi</EM> code produced is more device independent
+	than without this option.
+      <DT><STRONG>dvi.tex</STRONG>
+      <DD>Does not produce any device dependent code.
+	No rotation and no scaling takes place.
+    </DL>Do not use these options for interactive use of <span class=ite>iTe</span>.
+    
+    
+    <pre class="command">\usepackage{trig}</pre>
+
+    You have to load the <TT>trig</TT> package whenever you do not give 
+    dimensional arguments to an <TT>iteblock</TT> environment, see below.
+    
+    <pre class="command">\begin{iteblock}(x_dimen,y_dimen)
+     ...
+\end{iteblock}</pre>
+
+    The <TT>iteblock</TT> environment creates a box with the specified
+    dimensions (optional) and serves as a container for <code>\ite</code>
+    statements.
+    
+    <p>
+      Example:
+    <PRE>
+    \begin{iteblock}(\textwidth,5.0cm)
+    \ite Hallo
+    \end{iteblock}</PRE>
+    <P>
+      The <TT>iteblock</TT> environment can contain any number of <code>\ite</code>
+      statements.  If the optional dimensional arguments are not given, the
+      box will be the bounding box for all contained <code>\ite</code> objects.
+      With the optional arguments, the box is framed for convenience.  The
+      use of nested, unrestricted <TT>iteblock</TT> environments is not
+      allowed, see the definition of the <TT>itebind</TT> environment.
+      
+    <pre class="command">\ite ... </pre>
+
+    Defines <span class=ite>iTe</span> object.
+    <p>
+      Example:
+    <PRE>
+    \ite $cos x$
+    \ite \begin{minipage}Hello\\ World\end{minipage}</PRE>
+    <P>
+      Whatever you can put inside an <code>\mbox</code> you can also put after an
+      <code>\ite</code> statement. However, only restricted <TT>iteblock</TT>
+      environments are allowed. <span class=ite>iTe</span> will expand each <code>\ite</code> statement
+      to <code>\ITE(x y a s)</code>, where <I>x</I> and <I>y</I> is the translation in units
+      of <code>\ITEunit</code>, <I>a</I> is the angle of rotation, and <I>s</I> is the
+      scaling factor of the object. You should not change these numbers
+      manually.
+      
+    <pre class="command">\setlength{\ITEunit}{dimension}</pre>
+
+    The smallest unit an <span class=ite>iTe</span> object can be translated in either direction.
+    <P>
+      Example:
+    <PRE>
+    \setlength{\ITEunit}{0.1pt}</PRE>
+    The default is 0.5pt or approximately 0.35mm. You should change the
+    value of <code>\ITEunit</code> only if a higher resolution is required. With
+    the default, the two 'X' characters in the example
+    <PRE>
+\ITE(0 0 0 1)X
+\ITE(200 0 0 1)X</PRE>
+    are 100pt apart. After <code>\setlength{\ITEunit}{1mm}</code>, the distance would be
+    200mm.
+
+    <pre class="command">\begin{itebind} 
+    ...
+\end{itebind}</pre>
+
+    The <TT>itebind</TT> environment <EM>deactivates</EM> all enclosed <span class=ite>iTe</span> 
+    objects.  You have to use it inside macros, saved boxes, and recursive
+    <TT>iteblock</TT> environments.
+    <P>
+      Example:
+      
+    <TABLE CELLPADDING=3 WIDTH="100%">
+      <TR><TD ALIGN="LEFT">
+	  <PRE style="font-size:x-small">
+\newsavebox{\housebox}
+\sbox{\housebox}{\begin{itebind}
+\begin{iteblock}(0cm,0cm)
+\ITE(0 0 0 1)\framebox(20,20){}
+\ITE(7 0 0 0.482)\framebox(10,20){}
+\ITE(19 66 -50 1)\rule{20pt}{1pt}
+\ITE(-4 35 50 1)\rule{20pt}{1pt}
+\end{iteblock}
+\end{itebind}}
+
+\begin{iteblock}(3cm,3cm)
+\ITE(87 95 5 1.728)\usebox{\housebox}
+\ITE(230 103 -5 2.589)\usebox{\housebox}
+\end{iteblock}</PRE>
+	</TD>
+	<TD ALIGN="LEFT"><img src="images/house.gif" alt="Image"></TD>
+      </TR>
+    </TABLE>
+    <P>
+      <contact-stamp><hr><FONT SIZE=-1>
+	  Last modified by <A HREF="http://www.decatur.de/wolfgang">Wolfgang K&uuml;hn</a> on
+	  Saturday, 10 June 2000
+	</FONT>
+      </contact-stamp>
+  </BODY>
+</HTML>

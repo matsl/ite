@@ -1,0 +1,30 @@
+%
+% Test target:
+%   Basic iTe functionality.
+%
+% Test conjecture:
+%   Initially, all objects are aligned correctly. 
+%   Manipulations (translate, rotate, scale, zoom, etc.) work
+%   as documented.
+%
+% Test procedure:
+%   Both compile and invoke iTe on this file. 
+%
+
+\documentclass{article}
+\usepackage{graphics}
+\usepackage{ite}
+
+\begin{document}
+
+\begin{iteblock}(\textwidth,9cm)
+\ITE(0 0 0 1)\includegraphics{sc.eps}
+\ITE(494 367 180 1.728)\grabber{5}
+\ITE(360 357 0 1.728)$\sin x$
+\ITE(348 232 180 1.728)\grabber{5}
+\ITE(205 222 0 1.728)$\cos x$
+\ITE(204 444 0 1.728)\grabber{5}
+\ITE(270 436 0 1.728)$(\frac1{\sqrt2},\frac1{\sqrt2})$
+\end{iteblock}
+
+\end{document}

@@ -1,0 +1,15 @@
+p { }
+
+body { background-color:#fffff0; }
+
+span.ite { font-weight:bold }
+
+pre { background-color:#fff0ff;  }
+
+.command { 
+  font-size:large;
+  background-color:#f0ffff; border-bottom-style:solid; border-left-style:solid;
+  border-width:1pt; margin-top:24pt;
+}
+
+td.menu { background-color:lightblue; }

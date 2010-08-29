@@ -1,0 +1,115 @@
+%% File ite.ps. Contains PostSript prolog that is send to GhostScript
+%% upon start-up.
+%%
+%% Copyright (C) 1998 by Wolfgang Kuhn
+%%
+%% $Name:  $ 
+%% Built $Date: 1999/05/15 08:40:05 $
+%% Syntax          : PostSript
+%%
+%%    This program is free software; you can redistribute it and/or
+%%    modify it under the terms of the GNU General Public License
+%%    as published by the Free Software Foundation. See the copyright
+%%    notice included in the iTe distribution for more details.
+
+
+userdict /ITEDict 100 dict put
+
+TeXDict begin
+ITEDict begin
+
+  TeXDict /delta known 
+  TeXDict /eop known and
+  TeXDict /@rigin known and
+  TeXDict /landplus90 known and
+  TeXDict /isls known and
+  not {(Wrong version of dvips!) == flush quit} if
+
+  /Eop TeXDict /eop get bind def TeXDict /eop {} put
+
+  % If 'bbonly' is true and the 'eps' file is bigger than
+  % 'epslimit' bytes, then draw bounding box only.
+  /bbonly true def
+
+  /Run {(r) file dup bytesavailable 
+        ITEDict begin epslimit le bbonly end not or
+           {  % Execute file.
+              cvx exec
+           }{ % Draw bounding box only.
+              pop % File object
+	      % Is bounding box where it is supposed to be?
+              TeXDict /SDict known 
+	      {   SDict /llx known SDict /lly known and
+	          SDict /urx known and SDict /ury known and 
+              } {false}
+              ifelse
+	      {   gsave newpath llx lly moveto urx lly lineto urx ury lineto
+                  llx ury lineto closepath urx ury lineto llx ury moveto
+                  urx lly lineto stroke grestore
+	      } if
+           } ifelse
+   } def % Run
+
+  /Erase false def
+
+
+  /BeginObject {
+    % On stack: info unit delta -state-.
+    setgstate TeXDict begin /delta exch def end
+    /unit exch DVImag mul def
+    Erase {{pop 1.0} settransfer} if
+    aload pop
+    % On stack: x0 y0 x y angle mag
+    /scalefact exch def /angle exch def  
+    4 2 roll matrix translate itransform
+    % Now on stack: dx dy
+    
+    isls{ landplus90{neg exch}{exch neg} ifelse} if
+
+    unit mul exch unit mul exch    
+    S idtransform /offset [ 4 2 roll ] cvx def
+    
+    offset rmoveto                                                   
+    
+    currentpoint currentpoint translate                                 
+    angle neg rotate scalefact dup scale                                
+    neg exch neg exch translate                                         
+    
+    offset translate 
+  } def % /BeginObject
+  
+  /MakeBox {
+    % On stack: xdim ydim
+
+    DVImag mul exch DVImag mul exch
+    isls{ landplus90{neg exch}{exch neg} ifelse} if
+
+    gsave S idtransform
+    currentpoint newpath moveto 1 index 0 rlineto 0 1 index
+    rlineto 1 index neg 0 rlineto closepath 0 0 1 setrgbcolor
+    stroke grestore pop pop
+  } def % /MakeBox
+  
+  /R matrix currentmatrix def
+  
+  /Zoom matrix def
+  
+  % define S = R^-1 RS
+  /S gsave @rigin matrix currentmatrix grestore 
+  R matrix invertmatrix
+  matrix concatmatrix def % /S
+
+  /ZoomMatrix {
+    % On stack: zoom-unit x y
+    R itransform Zoom itransform
+    [
+      3 index neg dup 0 0 4 -1 roll
+      systemdict /DEVICEWIDTH  known {DEVICEWIDTH}  {596} ifelse 2.0 div
+      systemdict /DEVICEHEIGHT known {DEVICEHEIGHT} {842} ifelse 2.0 div
+    ] transform
+    [
+      4 -1 roll dup 0 0 4 -1 roll
+      7 -2 roll ]
+  } def % /ZoomMatrix 
+
+end % ITEDict  

@@ -1,0 +1,10 @@
+#! /bin/sh
+# Script to compile all test TeX and LaTeX files in the iTe distribution.
+
+latex basic;
+latex fancy;
+latex master;
+latex pages;
+latex parse;
+tex plain
+

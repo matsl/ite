@@ -1,0 +1,244 @@
+% This is file 'ite.dtx'.
+%
+% Copyright (C) 1999, 2002 by Wolfgang Kuehn <wolfgang@decatur.de>
+%
+% Run 'tex ite.ins' to generate files `ite.sty' and `ite.tex'.
+% 
+%<<COMMENT
+%% Version: _ITEVERSION_
+%% Time-stamp: <2005-01-09 wolfgang>
+%COMMENT
+%
+% This program is free software; you can redistribute it
+% and/or modify it under the terms of the GNU General
+% Public License as published by the Free Software 
+% Foundation. See the copyright  notice included in the
+% iTe distribution for more details.
+
+\catcode`\@=11
+
+% Conditional test false when we are inside an itebind environment.
+\newif\ifiTeX\iTeXtrue
+
+\def\iTePost(#1 #2 #3 #4){\iTePut(#1 #2){%
+\iTeComment{iTeBeginObject \the\ITEunit}%
+\special{ps:
+   gsave currentpoint currentpoint translate #3 neg rotate
+   #4 dup scale neg exch neg exch translate}%
+\iTeComment{iTeInObject}%
+\box\iTeObjectBox
+\special{ps: grestore}\iTeComment{iTeEndObject}}}
+
+\let\iteinput\input
+\def\input{\@ifnextchar\bgroup\ite@input\ite@@input}
+\def\ite@input#1{\message{ITEKEYOPEN}\iteinput{#1}\message{ITEKEYCLOSE}}
+\def\ite@@input#1 {\message{ITEKEYOPEN}\iteinput#1 \message{ITEKEYCLOSE}}
+
+\let\iteinclude\include
+\def\include#1{\message{ITEKEYOPEN}\iteinclude{#1}\message{ITEKEYCLOSE}}
+
+%<*package>
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{ite}[1998/12/15]
+
+\DeclareOption{dvi}{\iTeXfalse
+% Overload iTePost
+\gdef\iTePost(#1 #2 #3 #4){\iTePut(#1 #2){\box\iTeObjectBox}}}
+
+\DeclareOption{graphics}{\iTeXfalse
+% Overload iTePost
+\gdef\iTePost(#1 #2 #3 #4){\iTePut(#1 #2){\rotatebox{#3}{\scalebox{#4}%
+{\box\iTeObjectBox}}}}}
+\ProcessOptions
+
+\newenvironment{iteblock}{\beginiteblock}{\enditeblock}
+\newenvironment{itebind}{\beginitebind}{\enditebind}
+
+\def\grabber#1{{\unitlength=1pt\circle{4}}\hskip-2.0pt
+\vrule height0.4pt depth0.4pt width#1mm}
+%</package>
+
+%<*plain>
+\expandafter\ifx\csname iTeBeginBlock\endcsname\relax{}\else\endinput\fi
+\expandafter\ifx\csname PackageWarning\endcsname\relax{}\else
+\PackageWarning{ite}{Please use '\protect\usepackage{ite}'}%
+\usepackage{ite}\fi
+
+\let\color@endgroup\relax
+\let\color@setgroup\relax
+
+\def\grabber#1{\hskip-2.5pt\lower 2.5pt\hbox{$\circ$}\hskip-0.7pt
+\vrule height0.4pt depth0.4pt width#1mm}
+%</plain>
+
+\def\iTeLogKey#1{ITEKEY#1}
+\immediate\write-1{\iTeLogKey{VERSION} _ITEVERSION_\space}
+
+% X and Y coordinates are in units of \ITEunit.
+\newdimen\ITEunit\ITEunit=0.5pt
+
+% Dimension of hbox containing current block. Note that U
+% is the dimension of the part to the left of the reference point 
+% (or W/U <=> H/D).
+\newdimen\iTeW\newdimen\iTeU
+\newdimen\iTeH\newdimen\iTeD
+
+% Register for current block.
+\newbox\iTeBlockBox
+
+% Register for current object.
+\newbox\iTeObjectBox
+
+% Conditional test true if block has no optional argument.
+\newif\ifiTeArgP
+
+% Enumerate all blocks.
+\newcount\iTeBlockCount\iTeBlockCount=0
+
+\def\beginitebind{\iTeXfalse}
+\def\enditebind{\iTeXtrue}
+
+\newtoks\everyite
+
+\newlinechar`\^^J
+\catcode`\%=12
+\def\iTeComment#1{\ifiTeX\special{ps:^^J%#1^^J}\fi}
+\catcode`\%=14
+
+\def\beginiteblock{%
+\ifiTeX
+\global\advance\iTeBlockCount by 1
+\immediate\write-1{\iTeLogKey{BLOCK} \the\iTeBlockCount}%
+\fi%
+% Fetch next token.
+\futurelet\iTeArg\iTeCond}
+
+% Handle conditional argument (xdim, ydim).
+\def\iTeCond{\ifx\iTeArg(\let\iTeNext=\iTeBlockYes\iTeArgPtrue\else
+\let\iTeNext=\iTeBlockNo\iTeArgPfalse\fi\iTeNext}
+
+
+\def\iTeBlockYes(#1,#2){\setbox\iTeBlockBox=\hbox\bgroup\the\everyite
+\color@setgroup
+\iTeW=#1\iTeH=#2\iTeD=0pt\iTeU=0pt
+% Generate 'iTeBeginBlock' mark and dimensions of block.
+\iTeComment{iTeBeginBlock \the\iTeBlockCount\space
+\the\iTeW\space\the\iTeH}%
+% Start dummy box.
+\setbox\iTeObjectBox=\hbox\bgroup\color@setgroup}
+
+\def\iTeBlockNo{%
+%<*package>
+\@ifundefined{CalculateCos}{%
+\PackageError{ite}{%
+Package trig required
+}{%
+Package trig is required whenever an iteblock environment
+is used without the optional dimensional argument.
+}}{\relax}%
+%</package>
+\setbox\iTeBlockBox=\hbox\bgroup\the\everyite\color@setgroup
+% Initialize blocks dimension. 
+\iTeW=-16000pt\iTeU=-16000pt\iTeH=-16000pt\iTeD=-16000pt
+% Generate 'iTeBeginBlock' mark and dimensions of block.
+\iTeComment{iTeBeginBlock \the\iTeBlockCount\space}%
+% Start dummy box.
+\setbox\iTeObjectBox=\hbox\bgroup\color@setgroup}
+
+\def\enditeblock{\unskip\color@endgroup\egroup% Close last object.
+\xdef\iTeResize{%
+\ht\iTeBlockBox\the\iTeH\dp\iTeBlockBox\the\iTeD
+\wd\iTeBlockBox\the\iTeW\hskip\the\iTeU}%
+\color@endgroup\egroup\iTeResize%Close and resize block.
+\box\iTeBlockBox
+% Generate 'iTeEndBlock' mark.
+\iTeComment{iTeEndBlock}%
+}
+
+
+\def\ite{\ITE(0 0 0 1)}
+% Note that first encounter of '\ITE' in a block closes dummy box.
+% All others close the last object.
+\def\ITE(#1 #2 #3 #4){%
+\unskip\color@endgroup\egroup% does an implicit '\iTeCloseObject'.
+% Store away coordinates.
+\def\iTeCoord{(#1 #2 #3 #4)}%
+% Start next object.
+\setbox\iTeObjectBox=\hbox\bgroup\aftergroup\iTeCloseObject\color@setgroup}
+
+
+% Copied from Knuth's TeXbook. Translates #3 by #1\ITEunit in x-direction
+% and by #2\ITEunit in y-direction.
+\def\iTeCloseObject{\ifiTeArgP\relax\else\expandafter\iTeBbox\iTeCoord\fi
+\wd\iTeObjectBox=0pt
+\ht\iTeObjectBox=0pt
+\dp\iTeObjectBox=0pt
+\expandafter\iTePost\iTeCoord}
+
+
+\def\iTePut(#1 #2)#3{\rlap{\kern#1\ITEunit\raise#2\ITEunit\hbox{#3}}}
+
+
+% Arguments are dimensional registers. Executes #3=max{|#1|,|#2|}.
+\def\iTeMax#1#2#3{\ifdim#1<0pt#1=-#1\fi
+\ifdim#2<0pt#2=-#2\fi%
+\ifdim#1<#2#3=#2\else#3=#1\fi}
+
+
+\def\iTeBbox(#1 #2 #3 #4){%
+\CalculateCos{#3}\CalculateSin{#3}%
+\edef\c{\UseCos{#3}}\edef\s{\UseSin{#3}}%
+% Dimensions of object.
+\dimendef\w=0\dimendef\u=1%
+\dimendef\h=2\dimendef\d=3%
+% Auxiliary registers.
+\dimendef\ra=4\dimendef\rb=5%
+% Dimension of rotated and centered object.
+\dimendef\wp=6\dimendef\hp=7%
+% Center of object.
+\dimendef\tx=8\dimendef\ty=9%
+%
+\w=#4\wd\iTeObjectBox
+\h=#4\ht\iTeObjectBox
+\d=#4\dp\iTeObjectBox
+%
+\tx=0.5\w
+\ty=0.5\h\advance\ty by -0.5\d
+%
+% Center object.
+\advance\w by -\tx
+\advance\h by -\ty
+%
+% Compute width of rotated box.
+\ra=\c\w\rb=\ra
+\advance\ra by -\s\h
+\advance\rb by \s\h
+\iTeMax\ra\rb\wp
+%
+% Compute height of rotated box.
+\ra=\s\w\rb=\ra
+\advance\ra by \c\h
+\advance\rb by -\c\h
+\iTeMax\ra\rb\hp
+%
+\w=\wp\u=\wp\h=\hp\d=\hp
+\ra=\c\tx\advance\ra by -\s\ty
+\rb=\s\tx\advance\rb by \c\ty
+\tx=\ra\ty=\rb
+\advance\tx by #1\ITEunit
+\advance\ty by #2\ITEunit
+%
+\advance\w by \tx
+\advance\u by -\tx
+\advance\h by \ty
+\advance\d by -\ty
+%
+\ifdim\iTeW<\w\iTeW=\w\fi
+\ifdim\iTeU<\u\iTeU=\u\fi
+\ifdim\iTeH<\h\iTeH=\h\fi
+\ifdim\iTeD<\d\iTeD=\d\fi}
+
+\catcode`\@=12
+
+\endinput
+

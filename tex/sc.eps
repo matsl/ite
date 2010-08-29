@@ -1,0 +1,54 @@
+%!PS-Adobe-2.0 EPSF-2.0
+%%Title: 'sc.eps'
+%%Creator: Wolfgang Kuehn
+%%BoundingBox: 40 40 400 310
+%%Orientation: Portrait
+%%EndComments
+
+gsave
+(Helvetica-Bold) findfont 15 scalefont setfont
+
+/B { newpath 0 -1 moveto PI -1 lineto PI 1 lineto 0 1 lineto closepath } bind def
+/PI 3.2 def
+
+/CM matrix currentmatrix def
+
+/M [73 0 0 118 84 178] def
+/S {gsave CM setmatrix stroke grestore} def
+
+
+gsave
+M concat
+
+gsave
+B 3 setlinewidth gsave CM setmatrix stroke grestore
+0 0 moveto PI 0 lineto 2 setlinewidth S
+grestore
+
+2 setlinewidth
+gsave
+0 0 moveto 0 0.1 PI {dup 57 mul sin lineto} for
+S
+grestore
+
+gsave
+0 1 moveto 0 0.1 PI {dup 57 mul cos lineto} for
+S
+grestore
+
+/str 10 string def
+
+gsave
+0 1 PI {dup -1 moveto 0 0.05 rlineto S
+ dup 0.05 sub -1.15 moveto 10 str cvrs 
+gsave CM setmatrix show grestore} for
+grestore
+
+gsave
+-1 0.5 1 {dup 0 exch moveto 0.1 0 rlineto S 
+dup -0.5 exch 0.05 sub moveto 10 str cvrs
+gsave CM setmatrix show grestore} for
+grestore
+grestore
+
+showpage

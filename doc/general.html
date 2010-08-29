@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<TITLE>How iTe works</TITLE>
+<LINK REL="STYLESHEET" HREF="manual.css">
+</HEAD>
+<BODY >
+
+<B> Next:</B> <A HREF="invocation.html">Invocation</A>
+<B> Up:</B> <A HREF="manual.html">iTe</A>
+<B> Previous:</B> <A HREF="installation.html">Installation</A>
+
+<H1>How <span class=ite>iTe</span> works</H1>
+
+<P>
+The following L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X2<SUB>e</SUB> code is a minimal working example.
+
+<P>
+<PRE>
+   \documentclass{article}
+   \usepackage{ite}
+   \begin{document}
+
+   \begin{iteblock}(5cm,5cm)
+   \ite Hello
+   \ite World
+   \end{iteblock}
+
+   \end{document}
+</PRE>
+<P>
+It defines two <EM>active</EM> <span class=ite>iTe</span> objects (`Hello' and `World').
+Upon starting <span class=ite>iTe</span>, active objects can be manipulated interactively.
+The possible operations are translation, rotation and scaling. The
+origin for these operations is the lower left corner of the box
+defined by the <TT>iteblock</TT> environment. For an active object, <span class=ite>iTe</span> 
+establishes a one-to-one relationship between its L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X source code
+and the corresponding PostScript code fragment.  All operations are
+then simultaniously recorded in both the L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X source and in the GhostScript window.  For example, if the `Hello' is translated,
+rotated by 90 degrees and scaled by a factor of 2, then the
+corresponding L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X source will look like this:
+
+<P>
+<PRE>
+   \ITE(50 70 90 2) Hello
+</PRE>
+<P>
+Sometimes, you might be pressed to define <span class=ite>iTe</span> objects inside macros
+or saved boxes. If this is the case, many PostScript code fragments
+may correspond to one L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X source object. Here you have to use
+<EM>passive</EM> objects. The use of active objects inside macros and
+saved boxes is <B>not</B> checked and will utterly confuse <span class=ite>iTe</span>.
+Passive objecst behave like active objects, but cannot be manipulated
+interactively. See the definition of the <TT>itebind</TT> <A
+HREF="latex.html">latex environment</a> on how to generate passive objects.
+
+<contact-stamp><hr><FONT SIZE=-1>
+Last modified by <A HREF="http://www.decatur.de/wolfgang">Wolfgang K&uuml;hn</a> on
+Saturday, 10 June 2000
+</FONT>
+</contact-stamp>
+</BODY>
+</HTML>

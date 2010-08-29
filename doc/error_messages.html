@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<TITLE>Error Messages</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="manual.css">
+</HEAD>
+<BODY >
+
+<B>Next:</B> <A HREF="bugs.html">Bugs and Feedback</A>
+<B>Up:</B> <A HREF="manual.html">iTe</A>
+<B>Previous:</B> <A HREF="gallery.html">Gallery</A>
+
+    <H1>Error Messages</H1>
+
+    <h2>PostScript Error</h2>
+
+    The generated PostScript is corrupt. To solve this
+    problem, do the following:
+    <ul>
+      <li>Generate PostScript code directly using 'dvips'
+	with the [dvi] option on.
+      <li>Preview the code using 'ghostview' or 'gs'.
+      <li>If the error persists, the problem is very likely
+	not related to iTe. Check your '\special'
+	directives or macros which produce '\special', such
+	as PS-Tricks macros.
+      <li>If there is no PostScript error, the version of
+	'dvips' may be inconsistent with the version of iTe.
+      <li>Get the newest version of iTe.
+      <li>If your version of 'dvips' is older than 5.58,
+	then get a newer version.
+      <li>If 'dvips' is of a current release, then you found an iTe bug and should file a bug report.
+    </ul>
+    
+    <h2>Cannot find all iTe objects</h2>
+    
+    While parsing the (La)TeX source code, not all active iTe objects were found. The most 
+    likely reason for this is an inadequate use of the '\ite' directive.
+    <ul>
+      <li>Do not include naked (not contained in an iteblock
+	environment) '\ite' directives from other files via '\input' or
+	'\include'. 
+      <li>Do not rebind the '\ite' macro.
+    </ul>
+    
+    <h2>Spurious iTe object in (La)TeX source</h2>
+    
+    While parsing the (La)TeX source, iTe has mistaken
+    an inactive iTe object for an active iTe object.
+    <p>
+      The reasons could be
+    <ul>
+      <li>You have loaded the iTe package using the 'dvi'
+	or 'graphics' option, for example with
+	'\usepackage[dvi]{ite}'. In this case, all objects
+	are inactive, which is not what you want. Don't use
+	these options when running iTe.
+      <li>You have used some weird TeX construct, for example
+	'\string\ite', for which iTe's parser is too dumb to
+	see that the '\ite' directive is not expanded.
+    </ul>
+    
+    <h2>Argument syntax error</h2>
+    
+    Arguments to an '\ITE' directive is
+    corrupt. A correct syntax should look like
+    <pre>\ITE(123 123 1.3 -10)</pre>
+    for example.
+      
+    <h2>DVI file outdated</h2>
+    
+    The dvi-file does not exist or is older than the (La)TeX source file.  Please
+    recompile the source before using iTe again.
+    
+    <h2>Buffer modified</h2>
+    
+    The buffer with the (La)TeX source was modified
+    but not saved. Please save and recompile the source.
+    
+    <h2>Generating PostScript failed</h2>
+    
+    iTe was not able to translate the DVI-file into a PostScript file.
+    Please see the log-buffer for more details. 
+    <p>
+      The reasons for failure could be one of
+    <ul>
+      <li>'dvips' could not be executed, i.e., is not in your search path.
+      <li>'perl' could not be executed, i.e., is not in your search path.
+      <li>Versions of files in the iTe distribution are inconsistent.
+	'ite.el', 'ite.pl', 'ite.sty' and 'ite.ps' must all be of the
+	same version.
+      <li>iTe was unable to read the (La)TeX log-file.
+      <li>You did not load the iTe-package at all. Insert
+	'usepackage{ite}' in the header of the (La)TeX source.
+      <li>There are no iTe blocks, and thus no active ite objects,
+	in the (La)TeX source.
+    </ul>
+    
+<contact-stamp><hr><FONT SIZE=-1>
+Last modified by <A HREF="http://www.decatur.de/wolfgang">Wolfgang K&uuml;hn</a> on
+27 December 2002
+</FONT>
+</contact-stamp>
+</BODY>
+</HTML>
+
+
+
+
+

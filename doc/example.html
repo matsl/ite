@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<TITLE>Real World Example</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<LINK REL="STYLESHEET" HREF="manual.css">
+</HEAD>
+<BODY >
+
+<B> Next:</B> <A HREF="gallery.html">Gallery</A>
+<B> Up:</B> <A HREF="manual.html">iTe</A>
+<B> Previous:</B> <A HREF="winmanager.html">Taming the Window</A>
+
+<H1>Real World Example</H1>
+
+<P>
+<TABLE CELLPADDING=3 WIDTH="100%">
+<TR><TD ALIGN="LEFT">
+<PRE>
+\documentclass{article}
+\usepackage{graphics}
+\usepackage{ite}
+
+\begin{document}
+
+\begin{iteblock}(5cm,5cm)
+\ite\includegraphics{sc.eps}
+\ite\grabber{5}
+\ite$\sin x$
+\ite\grabber{5}
+\ite$\cos x$
+\ite\grabber{5}
+\ite$(\frac1{\sqrt2},
+      \frac1{\sqrt2})$
+\end{iteblock}
+
+\end{document}
+</PRE>
+</TD>
+<TD ALIGN="LEFT"><img src="images/sc.gif" alt="Image"></TD>
+</TR>
+</TABLE>
+<P>
+<contact-stamp><hr><FONT SIZE=-1>
+Last modified by <A HREF="http://www.decatur.de/wolfgang">Wolfgang K&uuml;hn</a> on
+Sunday, 21 November 1999
+</FONT>
+</contact-stamp>
+</BODY>
+</HTML>

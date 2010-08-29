@@ -1,0 +1,66 @@
+%
+% Test target:
+%   Management of multiple pages and files.
+%
+% Test conjecture:
+%   Of the five iTe-blocks associated with this file, only
+%   blocks 1,2,4 and 5 are active in an iTe-session.
+%
+% Test procedure:
+%   Both compile and invoke iTe on this file. 
+%
+
+\documentclass{article}
+\usepackage{trig}
+\usepackage{ite}
+
+\begin{document}
+
+This page should not be displayed.
+
+\newpage
+
+This page should not be displayed.
+
+\newpage
+
+This page should be displayed with two active iTe-blocks.
+
+Block1:\medbreak
+\begin{iteblock}
+\ITE(0 0 0 1) Object 1
+\ITE(100 0 0 1) Object 2
+\end{iteblock}
+
+\input slave2.tex
+
+Block2:\medbreak
+\begin{iteblock}
+\ITE(0 0 0 1) Object 3
+\ITE(100 0 0 1) Object 4
+\end{iteblock}
+
+\newpage
+
+This page should not be displayed.
+
+\newpage
+
+This page should be displayed with two iTe-blocks, both active.
+\medbreak
+Block4:\medbreak
+\begin{iteblock}
+\ITE(0 0 0 1) Object 1
+\ITE(100 0 0 1) Object 2
+\end{iteblock}
+
+
+Block5:\medbreak
+\begin{iteblock}
+\ITE(0 0 0 1) Object 3
+\ITE(100 0 0 1) Object 4
+\end{iteblock}
+
+\end{document}
+
+
