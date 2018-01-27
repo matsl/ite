@@ -2,6 +2,8 @@
 ;;;
 ;;; Copyright (C) 2000, 2002, 2005 by Wolfgang Kuehn <wolfgang@decatur.de>
 ;;;
+;;; License: GPL-2+
+;;;
 ;;; Version: _ITEVERSION_
 ;;; Time-stamp: <05/03/21 19:45:31 wolfgang>
 ;;; Syntax          : emacs-lisp
